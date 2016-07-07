@@ -1,0 +1,64 @@
+<head>
+	<title>Chat</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+	<style>
+body,
+textarea,
+input {
+	font-size:13px;
+	font-family: sans-serif;
+
+}
+.chat{
+	max-width: 300px;
+	background-color: beige;
+}
+
+.chat-messages,
+.chat-textarea,
+.chat-name{
+	border: 1px solid black;
+}
+.chat-messages{
+	height: 300px;
+	overflow-y:scroll;
+
+}
+.chat-message{
+	margin-bottom: 10px;
+}
+.chat-name{
+	width: 100%;
+	padding: 10px;
+	border-bottom: 0;
+	margin: 0;
+}
+.chat-textarea{
+	width: 100%;
+	padding: 10px;
+	border-top: 0;
+	margin: 0;
+	max-width:100%;
+
+}
+</style>
+</head>
+<body>
+	<div class="chat">
+		<input type="text" class="chat-name" placeholder="Enter your Name">
+		<div class="chat-messages">
+		</div>
+		
+	<textarea class="chat-textarea" placeholder="Type your message"></textarea>
+	
+<script>
+	$(function(){
+		var socket = io.connect();
+	});
+</script>
+
+</body>
+</html>
