@@ -70,6 +70,8 @@
 		$userForm.submit(function(e){
 			e.preventDefault();
 			socket.emit('new user',$username.val());
+			$userForm.hide(400);
+			alert("Welcome"+':'+$username.val());
 			
 		});
 	});
