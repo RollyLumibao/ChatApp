@@ -1,62 +1,77 @@
 <head>
+<html>
 	<title>Chat</title>
-	<link rel="stylesheet" href="css/style.css">
 	<script src="/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
 	<style>
-body,
-textarea,
-input {
-	font-size:13px;
-	font-family: sans-serif;
+	body{
 
-}
-.chat{
-	max-width: 300px;
-	background-color: beige;
-}
+		margin-top: 30px;
+	}
+	.chat .well{
+		overflow-y: scroll;
+	}
 
-.chat-messages,
-.chat-textarea,
-.chat-name{
-	border: 1px solid black;
-}
-.chat-messages{
-	height: 300px;
-	overflow-y:scroll;
-
-}
-.chat-message{
-	margin-bottom: 10px;
-}
-.chat-name{
-	width: 100%;
-	padding: 10px;
-	border-bottom: 0;
-	margin: 0;
-}
-.chat-textarea{
-	width: 100%;
-	padding: 10px;
-	border-top: 0;
-	margin: 0;
-	max-width:100%;
-
-}
-</style>
+	</style>
 </head>
 <body>
-	<div class="chat">
-		<input type="text" class="chat-name" placeholder="Enter your Name">
-		<div class="chat-messages">
-		</div>
-		
-	<textarea class="chat-textarea" placeholder="Type your message"></textarea>
+	<div class="container">
+		<div class="row">
+	 <div class="col-md-8">
+				<div class="chat well" style="height:300px;" id="chat"></div>
+				<form id="messageForm">
+					<div class="form-group">
+						<label>Enter Message</label>
+						<textarea class="form-control" id="message"></textarea>
+						<br/>
+						<input type="submit" class="btn btn-primary" value="Send Message"/>
+					</div>
+				</form>
+
+				<form id="userForm">
+					<div class="form-group">
+						<label>Enter Username</label>
+						<input class="form-control" style="width:200px;" id="username"/>
+						<br/>
+						<input type="submit" class="btn btn-primary" value="Enter Username"/>
+					</div>
+				</form>
+			</div>
+
+	   </div>
+  </div>
+
 	
 <script>
 	$(function(){
 		var socket = io.connect();
+		var $messageForm = $('#messageForm');
+		var $message = $('#message');
+		var $chat = $('#chat');
+		var $userForm = $('#userForm');
+		var $username = $('#username');
+		var $users= $('#users')
+
+		$messageForm.submit(function(e){
+			e.preventDefault();
+			if($username.val() == ''){
+				alert("Please enter username!");
+			}
+			else{
+			socket.emit('send message',$message.val());
+			$message.val('');
+			}
+		});
+
+		socket.on('new message',function(data){
+			$chat.append('<div><strong>'+data.user+':'+'</strong>'+data.msg+'</div');
+		});
+		$userForm.submit(function(e){
+			e.preventDefault();
+			socket.emit('new user',$username.val());
+			
+		});
 	});
 </script>
 
